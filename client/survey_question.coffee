@@ -1,28 +1,41 @@
+Utils =
+  extend: (obj, withObj) ->
+    for key, value of withObj
+      obj[key] = withObj
+
+  defaults: (obj, defaults) ->
+    for key, value of defaults
+      unless obj[key]?
+        obj[key] = defaults[key]
+
 class Model
   defaults: {}
-  constructor: (@_collection_id) ->
-    @_collection_id = "#{@_collection_id}"
+
+  constructor: (@_collectionID) ->
+    @_collectionID = "#{@_collectionID}"
     # TODO: figure out why this test lies initially
-    unless @collection.findOne(@_collection_id)?
-      @doc = _.extend(_id: @_collection_id, @defaults)
+    unless @collection.findOne(@_collectionID)?
+      @doc = Utils.defaults _id: @_collectionID, @defaults
       @collection.insert @doc, ->
+
   set: (key, value) ->
     partial = {}
     partial["#{key}"] = value
-    @collection.update @_collection_id, $set: partial
+    @collection.update @_collectionID, $set: partial
+
   get: (key) ->
-    @collection.findOne(@_collection_id)?[key]
+    @collection.findOne(@_collectionID)?[key]
 
 class View
   constructor: ->
-    @_assign_events_to_template()
-    @_assign_data_helpers_to_template()
-    @_assign_block_helpers()
-    Meteor.startup =>
-      # TODO: does this need to be done in Meteor.startup?
-      @initialize()
+    @_assignEventsToTemplate()
+    @_assignDataHelpersToTemplate()
+    @_assignBlockHelpers()
+    @initialize()
+
   initialize: ->
-  _assign_data_helpers_to_template: ->
+
+  _assignDataHelpersToTemplate: ->
     boundHelpers = {}
     for key, fn of @dataHelpers
       boundHelpers[key] = (args...) =>
@@ -30,20 +43,55 @@ class View
 
     @template.helpers boundHelpers
 
-  _assign_block_helpers: ->
+  _assignBlockHelpers: ->
     for key, fn of @helpers
       Handlebars.registerHelper key, (args...) =>
         fn.apply this, args
-  _assign_events_to_template: ->
+
+  buildEventSelector: (event, block, element = '', modifiers = []) ->
+    "#{event} #{
+      @buildBEMSelector(
+        block
+        element
+        modifiers
+      )
+    }"
+
+  buildBEM: (block, element = '', modifiers = [], options) ->
+    prefix = options.prefix or ''
+    delimiter = options.delimiter or ''
+
+    baseSelector =
+      if element isnt ''
+        "#{prefix}#{block}--#{element}"
+      else
+        "#{prefix}#{block}"
+
+    modifierSelectors =
+      for modifier in modifiers
+        "#{prefix}#{block}-#{modifier}"
+
+    "#{baseSelector} #{modifierSelectors.join(delimiter)}"
+
+  buildBEMSelector: (block, element = '', modifiers = []) ->
+    @buildBEM block, element, modifiers,
+      prefix: '.'
+      delimiter: ''
+
+  buildBEMClassName: (block, element = '', modifiers = []) ->
+    @buildBEM block, element, modifiers,
+      prefix: ''
+      delimiter: ' '
+
+  _assignEventsToTemplate: ->
     @template.events = {}
     for key, object of @events
-      eventSelector = "#{object.event} .#{object.block}"
-
-      if object.element?
-        eventSelector = "#{eventSelector}--#{object.element}"
-
-      for modifier in object.modifiers or []
-        eventSelector = "#{eventSelector} .#{object.block}-#{modifier}"
+      eventSelector = @buildEventSelector(
+        object.event
+        object.block
+        object.element
+        object.modifiers
+      )
 
       @template.events[eventSelector] = (args...) =>
         # TODO: support strings as well as functions for callback value
@@ -53,39 +101,61 @@ SurveyQuestionCollection = new Meteor.Collection 'SurveyQuestion'
 
 class SurveyQuestionModel extends Model
   collection: SurveyQuestionCollection
+
   defaults:
     answer: null
 
 class SurveyQuestionView extends View
   template: Template.survey_question
+
   dataHelpers:
     selected: (value) ->
       value is @model.get('answer')
-    # TODO: write iterative helper for generating radiobutton elements
+
     choices: -> [
-      { value: 'red', description: 'Red' }
-      { value: 'green', description: 'Green' }
-      { value: 'blue', description: 'Blue' }
-      { value: 'cantdecide', description: "I can't decide" }
+      { value: 'red', title: 'Red', style: "background: red;" }
+      { value: 'green', title: 'Green', style: "background: green;" }
+      { value: 'blue', title: 'Blue', style: "background: blue; color: white;" }
+      { value: 'cantdecide', title: "I can't decide", style: """
+    background: red; /* uh oh */
+    background: -moz-linear-gradient( left ,
+        rgba(255, 0, 0, 1) 0%,
+        rgba(255, 255, 0, 1) 15%,
+        rgba(0, 255, 0, 1) 30%,
+        rgba(0, 255, 255, 1) 50%,
+        rgba(0, 0, 255, 1) 65%,
+        rgba(255, 0, 255, 1) 80%,
+        rgba(255, 0, 0, 1) 100%);
+    background: -webkit-gradient(linear,  left top, right top,
+        color-stop(0%, rgba(255, 0, 0, 1)),
+        color-stop(15%, rgba(255, 255, 0, 1)),
+        color-stop(30%, rgba(0, 255, 0, 1)),
+        color-stop(50%, rgba(0, 255, 255, 1)),
+        color-stop(65%, rgba(0, 0, 255, 1)),
+        color-stop(80%, rgba(255, 0, 255, 1)),
+        color-stop(100%, rgba(255, 0, 0, 1)));
+      """}
     ]
+
   helpers:
-    render_choices: (choices, options) ->
+    renderChoices: (choices, options) ->
       out = ""
       answer = @model.get('answer')
       for choice in choices
+        className = @buildBEMClassName(
+          'Form'
+          'radiobutton'
+          ['selected'] if answer is choice.value
+        )
         out = """
           #{out}
-          <div class='Form--radiobutton #{
-            if answer is choice.value
-              'Form--radiobutton-selected'
-            else
-              ''
-          }' data-value='#{choice.value}'>
+          <div class='#{className}' data-value='#{choice.value}' style='#{choice.style}'>
             <i class='fa'></i>
             #{options.fn choice}
           </div>
         """
       out
+
   events:
     clickRadioButton:
       block: 'Form'
@@ -97,9 +167,9 @@ class SurveyQuestionView extends View
           @model.set 'answer', null
         else
           @model.set 'answer', value
+
   initialize: ->
     @model = new SurveyQuestionModel 0
-
 
 new SurveyQuestionView
 

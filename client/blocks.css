@@ -13,7 +13,7 @@
   content: "\f111"
 }
 
-.Form--radiobutton.Form--radiobutton-selected .fa:before{
+.Form--radiobutton.Form-selected .fa:before{
   content: "\f058"
 }
 
