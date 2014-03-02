@@ -2,10 +2,7 @@
   <h1>What is your favorite color?</h1>
   <div class='Arrange'>
     <div class='Form Arrange-sizeFill'>
-      <div class='Form--radiobutton {{#if selected "red"}}Form--radiobutton-selected{{/if}}' data-value='red'><i class='fa'></i> Red</div>
-      <div class='Form--radiobutton' data-value='green'><i class='fa'></i> Green</div>
-      <div class='Form--radiobutton' data-value='blue'><i class='fa'></i> Blue</div>
-      <div class='Form--radiobutton' data-value='cant'><i class='fa'></i> I can't decide</div>
+      {{#render_choices choices}}{{description}}{{/render_choices}}
     </div>
     <div class='Arrange-sizeFit'>
       <div class='Preview'>
