@@ -12,3 +12,7 @@ iron-router
 coffeescript
 
 font-awesome
+
+# private packages
+bem-view
+skeletor-model
