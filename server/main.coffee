@@ -1,5 +1,8 @@
 
 SurveyQuestionCollection = new Meteor.Collection 'SurveyQuestion'
+
+if SurveyQuestionCollection.find().count() is 0
+  SurveyQuestionCollection.insert _id: '0', question_text: 'What is your favorite color?'
 SurveyEnumeratedResponseCollection = new Meteor.Collection 'SurveyEnumeratedResponse'
 
 if SurveyEnumeratedResponseCollection.find().count() is 0

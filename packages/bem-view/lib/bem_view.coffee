@@ -12,14 +12,16 @@ class View
 
   _assignDataHelpersToTemplate: ->
     boundHelpers = {}
-    for key, fn of @dataHelpers
-      boundHelpers[key] = (args...) =>
-        fn.apply this, args
+    for key, fn of @dataHelpers or {}
+      do =>
+        localFn = fn
+        boundHelpers[key] = (args...) =>
+          localFn.apply this, args
 
     @template.helpers boundHelpers
 
   _assignBlockHelpers: ->
-    for key, fn of @helpers
+    for key, fn of @helpers or {}
       Handlebars.registerHelper key, (args...) =>
         fn.apply this, args
 
@@ -60,15 +62,16 @@ class View
 
   _assignEventsToTemplate: ->
     @template.events = {}
-    for key, object of @events
+    for key, object of @events or {}
       eventSelector = @buildEventSelector(
         object.event
         object.block
         object.element
         object.modifiers
       )
-
-      @template.events[eventSelector] = (args...) =>
-        # TODO: support strings as well as functions for callback value
-        object.callback.apply this, args
+      do =>
+        localFn = object.callback
+        @template.events[eventSelector] = (args...) =>
+          # TODO: support strings as well as functions for callback value
+          localFn.apply this, args
 

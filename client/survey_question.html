@@ -1,8 +1,8 @@
 <template name='survey_question'>
-  <h1>What is your favorite color?</h1>
+<h1>{{questionText}}</h1>
   <div class='Arrange'>
     <div class='Form Arrange-sizeFill'>
-      {{#renderChoices choices}}{{title}}{{/renderChoices}}
+      {{#renderAnswerChoices choices}}{{title}}{{/renderAnswerChoices}}
     </div>
     <div class='Arrange-sizeFit'>
       <div class='Preview'>
