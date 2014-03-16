@@ -47,12 +47,12 @@ class SurveyQuestionView extends View
           @model.set 'response_format', null
         else
           @model.set 'response_format', value
-    clickSaveButton:
-      block: 'Button'
-      element: 'save'
-      event: 'click'
+    changeQuestionPrompt:
+      block: 'Form'
+      element: 'input'
+      event: 'change'
       callback: ->
-        @model.set 'question_text', $('[name="question_text"]').val()
+        @model.set 'question_text', $(event.target).val()
 
 new SurveyQuestionView
 
