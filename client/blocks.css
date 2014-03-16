@@ -1,7 +1,7 @@
 .Form {
 }
 
-.Form--radiobutton {
+.Form-radiobutton {
   display: block;
   margin: 0.5em;
   padding: 0.5em;
@@ -9,11 +9,11 @@
   outline: 1px solid black;
 }
 
-.Form--radiobutton .fa:before {
+.Form-radiobutton .fa:before {
   content: "\f111"
 }
 
-.Form--radiobutton.Form-selected .fa:before{
+.Form-radiobutton.Form-radiobutton--selected .fa:before{
   content: "\f058"
 }
 

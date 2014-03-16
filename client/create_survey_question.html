@@ -1,8 +1,8 @@
 <template name='create_survey_question'>
 <h1>Question: <input class='Arrange-sizeFill' type='text' name='question_text' value="{{questionText}}"></h1>
   <div class='Well'>
-    <div class='Well--title'>Response format</div>
-    <div class='Well--content Form'>
+    <div class='Well-title'>Response format</div>
+    <div class='Well-content Form'>
       {{#renderResponseFormatChoices responseFormatChoices}}{{title}}{{/renderResponseFormatChoices}}
     </div>
   </div>
@@ -11,7 +11,7 @@
       <div class="Button">Cancel</div>
     </div>
     <div class='Arrange-sizeFit'>
-      <div class="Button Button--save">Save</div>
+      <div class="Button Button-save">Save</div>
     </div>
   </div>
 </template>

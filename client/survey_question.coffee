@@ -6,8 +6,6 @@ class SurveyQuestionView extends View
   template: Template.survey_question
 
   dataHelpers:
-    # selected: (value) ->
-    #   value is @model.get('answer')
     questionText: -> 
       @model.get 'question_text'
 

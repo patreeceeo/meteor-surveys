@@ -40,13 +40,16 @@ class View
 
     baseSelector =
       if element isnt ''
-        "#{prefix}#{block}--#{element}"
+        "#{prefix}#{block}-#{element}"
       else
         "#{prefix}#{block}"
 
     modifierSelectors =
       for modifier in modifiers
-        "#{prefix}#{block}-#{modifier}"
+        if element?
+          "#{prefix}#{block}-#{element}--#{modifier}"
+        else
+          "#{prefix}#{block}--#{modifier}"
 
     "#{baseSelector} #{modifierSelectors.join(delimiter)}"
 
@@ -74,4 +77,6 @@ class View
         @template.events[eventSelector] = (args...) =>
           # TODO: support strings as well as functions for callback value
           localFn.apply this, args
+
+
 
