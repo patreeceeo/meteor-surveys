@@ -1,0 +1,10 @@
+<template name='vertically_split_layout'>
+  <div class='Arrange Arrange--withGutter Arrange--equal'>
+    <div class='Arrange-sizeFill'>
+      {{yield 'leftContent'}}
+    </div>
+    <div class='Arrange-sizeFill'>
+      {{yield 'rightContent'}}
+    </div>
+  </div>
+</template>

@@ -1,6 +1,8 @@
 # `BEM = {}`
 Handlebars = Package['handlebars'].Handlebars
 
+blockHelpers = {}
+
 class View
   constructor: ->
     @_assignEventsToTemplate()
@@ -22,8 +24,10 @@ class View
 
   _assignBlockHelpers: ->
     for key, fn of @helpers or {}
-      Handlebars.registerHelper key, (args...) =>
-        fn.apply this, args
+      unless blockHelpers[key]?
+        Handlebars.registerHelper key, (args...) =>
+          fn.apply this, args
+        blockHelpers[key] = true
 
   buildEventSelector: (event, block, element = '', modifiers = []) ->
     "#{event} #{

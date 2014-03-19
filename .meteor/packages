@@ -15,5 +15,5 @@ coffeescript
 # private packages
 bem-view
 skeletor-model
-
 font-awesome
+survey-question-view
