@@ -1,33 +1,27 @@
 View = Package['bem-view'].View
 Template = Package.templating.Template
+Handlebars = Package.handlebars.Handlebars
+
+Handlebars.registerHelper 'equals', (a, b) ->
+  a is b
+
+Handlebars.registerHelper 'BEMClass', (block, element, modifiers..., options) ->
+  View::buildBEMClassName block, element, modifiers
 
 class SurveyQuestionView extends View
 
   dataHelpers:
     questionText: -> 
-      @model.get 'question_text'
+      @model.get 'questionText'
+
+    responseFormat: ->
+      @model.get 'responseFormat'
 
     choices: ->
       SurveyEnumeratedResponseCollection.find().fetch()
 
-  helpers:
-    renderAnswerChoices: (choices, options) ->
-      out = ""
-      answer = @model.get('answer')
-      for choice in choices
-        className = @buildBEMClassName(
-          'Form'
-          'radiobutton'
-          ['selected'] if answer is choice.value
-        )
-        out = """
-          #{out}
-          <div class='#{className}' data-value='#{choice.value}' style='#{choice.style or ''}'>
-            <i class='fa'></i>
-            #{options.fn choice}
-          </div>
-        """
-      out
+    answer: ->
+      @model.get 'answer'
 
   events:
     clickRadioButton:

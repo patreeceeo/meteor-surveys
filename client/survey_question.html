@@ -1,8 +1,19 @@
 <template name='survey_question'>
-<h1>{{questionText}}</h1>
-  <div class='Arrange'>
-    <div class='Form Arrange-sizeFill'>
-      {{#renderAnswerChoices choices}}{{title}}{{/renderAnswerChoices}}
+  <h1>{{questionText}}</h1>
+    <div class='Arrange'>
+      <div class='Form Arrange-sizeFill'>
+        {{#if equals responseFormat 'list-choose-one'}}
+          {{#each choices}}
+            {{#if equals answer value}}
+              <div class="{{BEMClass 'Form' 'radiobutton' 'selected'}}" data-value="{{value}}" style="{{style}}">
+            {{/if}}
+            {{#unless equals answer value}}
+              <div class="{{BEMClass 'Form' 'radiobutton'}}" data-value="{{value}}" style="{{style}}">
+            {{/unless}}
+              <i class="fa"></i> {{title}}
+            </div>
+          {{/each}}
+        {{/if}}
+      </div>
     </div>
-  </div>
 </template>

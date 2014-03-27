@@ -7,7 +7,6 @@ class View
   constructor: ->
     @_assignEventsToTemplate()
     @_assignDataHelpersToTemplate()
-    @_assignBlockHelpers()
     @initialize()
 
   initialize: ->
@@ -21,13 +20,6 @@ class View
           localFn.apply this, args
 
     @template.helpers boundHelpers
-
-  _assignBlockHelpers: ->
-    for key, fn of @helpers or {}
-      unless blockHelpers[key]?
-        Handlebars.registerHelper key, (args...) =>
-          fn.apply this, args
-        blockHelpers[key] = true
 
   buildEventSelector: (event, block, element = '', modifiers = []) ->
     "#{event} #{
