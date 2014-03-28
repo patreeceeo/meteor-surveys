@@ -6,12 +6,14 @@
           {{#each choices}}
             {{#if equals answer value}}
               <div class="{{BEMClass 'Form' 'radiobutton' 'selected'}}" data-value="{{value}}" style="{{style}}">
+                <i class="fa"></i> {{title}}
+              </div>
             {{/if}}
             {{#unless equals answer value}}
               <div class="{{BEMClass 'Form' 'radiobutton'}}" data-value="{{value}}" style="{{style}}">
+                <i class="fa"></i> {{title}}
+              </div>
             {{/unless}}
-              <i class="fa"></i> {{title}}
-            </div>
           {{/each}}
         {{/if}}
       </div>

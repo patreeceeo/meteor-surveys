@@ -1,6 +1,3 @@
-View = Package['bem-view'].View
-Template = Package.templating.Template
-Handlebars = Package.handlebars.Handlebars
 
 Handlebars.registerHelper 'equals', (a, b) ->
   a is b

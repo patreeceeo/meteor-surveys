@@ -1,6 +1,3 @@
-# `BEM = {}`
-Handlebars = Package['handlebars'].Handlebars
-
 blockHelpers = {}
 
 class View

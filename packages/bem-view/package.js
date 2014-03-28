@@ -4,6 +4,7 @@ Package.describe({
 
 Package.on_use(function (api) {
   api.use('coffeescript', ['client']);
+  api.use('ui', ['client']);
   api.add_files('lib/bem_view.coffee', ['client']);
   api.export('View');
 });

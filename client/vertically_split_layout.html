@@ -1,10 +1,10 @@
 <template name='vertically_split_layout'>
   <div class='Arrange Arrange--withGutter Arrange--equal'>
     <div class='Arrange-sizeFill'>
-      {{yield 'leftContent'}}
+      {{> yield region='leftContent'}}
     </div>
     <div class='Arrange-sizeFill'>
-      {{yield 'rightContent'}}
+      {{> yield region='rightContent'}}
     </div>
   </div>
 </template>

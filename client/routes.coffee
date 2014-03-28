@@ -16,7 +16,5 @@ Router.map ->
     yieldTemplates:
       'survey_question': to: 'leftContent'
       'create_survey_question': to: 'rightContent'
-    action: ->
-      @renderYields()
 
 
