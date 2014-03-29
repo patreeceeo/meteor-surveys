@@ -4,16 +4,16 @@
       <div class='Form Arrange-sizeFill'>
         {{#if equals responseFormat 'list-choose-one'}}
           {{#each choices}}
-            {{#if equals answer value}}
-              <div class="{{BEMClass 'Form' 'radiobutton' 'selected'}}" data-value="{{value}}" style="{{style}}">
-                <i class="fa"></i> {{title}}
-              </div>
-            {{/if}}
-            {{#unless equals answer value}}
-              <div class="{{BEMClass 'Form' 'radiobutton'}}" data-value="{{value}}" style="{{style}}">
-                <i class="fa"></i> {{title}}
-              </div>
-            {{/unless}}
+          <div class="{{#if equals answer value}}{{BEMClass 'Form' 'radiobutton' 'selected'}}{{else}}{{BEMClass 'Form' 'radiobutton'}}{{/if}}" data-value="{{value}}" style="{{style}}">
+            <i class="fa"></i> {{title}}
+          </div>
+          {{/each}}
+        {{/if}}
+        {{#if equals responseFormat 'list-choose-multiple'}}
+          {{#each choices}}
+          <div class="{{#if equals answer value}}{{BEMClass 'Form' 'checkbox' 'selected'}}{{else}}{{BEMClass 'Form' 'checkbox'}}{{/if}}" data-value="{{value}}" style="{{style}}">
+            <i class="fa"></i> {{title}}
+          </div>
           {{/each}}
         {{/if}}
       </div>
