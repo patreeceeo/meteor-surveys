@@ -2,9 +2,6 @@
 Handlebars.registerHelper 'equals', (a, b) ->
   a is b
 
-Handlebars.registerHelper 'BEMClass', (block, element, modifiers..., options) ->
-  View::buildBEMClassName block, element, modifiers
-
 class SurveyQuestionView extends View
 
   dataHelpers:
