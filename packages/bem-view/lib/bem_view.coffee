@@ -1,8 +1,8 @@
 
-Handlebars.registerHelper 'block', (block, modifiers..., options) ->
+UI.registerHelper 'block', (block, modifiers..., options) ->
   View::buildBEMClassName block, null, modifiers
 
-Handlebars.registerHelper 'element', (block, element, modifiers..., options) ->
+UI.registerHelper 'element', (block, element, modifiers..., options) ->
   View::buildBEMClassName block, element, modifiers
 
 class View

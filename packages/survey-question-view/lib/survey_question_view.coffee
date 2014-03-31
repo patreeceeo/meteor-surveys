@@ -1,5 +1,5 @@
 
-Handlebars.registerHelper 'equals', (a, b) ->
+UI.registerHelper 'equals', (a, b) ->
   a is b
 
 class SurveyQuestionView extends View
